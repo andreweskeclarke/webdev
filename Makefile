@@ -14,19 +14,13 @@ deps:
 	test -f "$(NVM_DIR)/nvm.sh"
 	$(NVM_ENV) && nvm install
 
-
-.PHONY: node
-node:
-	$(NODE)
-
-
 .PHONY: clean
 clean:
 	rm -rf $(DEPLOY_DIR)
 
 
 .PHONY: build
-build: clean
+build: deps clean
 	mkdir $(DEPLOY_DIR)
 	$(TSC) -p tsconfig.json --outDir $(DEPLOY_DIR)
 	rsync -a src/html/ $(DEPLOY_DIR)
