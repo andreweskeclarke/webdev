@@ -1,6 +1,13 @@
-NVM_DIR:=$(HOME)/.nvm
+.DEFAULT_GOAL := build
+
+NVM_DIR?=$(HOME)/.nvm
+DEPLOY_DIR?=./dist
+
 NVM_ENV:=\. "$(NVM_DIR)/nvm.sh"
 NODE:=$(NVM_ENV) && nvm use && node
+TSC:=$(NVM_ENV) && nvm use && tsc
+
+
 
 .PHONY: deps
 deps:
@@ -11,3 +18,16 @@ deps:
 .PHONY: node
 node:
 	$(NODE)
+
+
+.PHONY: clean
+clean:
+	rm -rf $(DEPLOY_DIR)
+
+
+.PHONY: build
+build: clean
+	mkdir $(DEPLOY_DIR)
+	$(TSC) -p tsconfig.json --outDir $(DEPLOY_DIR)
+	rsync -a src/html/ $(DEPLOY_DIR)
+
