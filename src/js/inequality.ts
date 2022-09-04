@@ -1,6 +1,6 @@
 function main() {
-    let message: string = `hello world ${Date()}`;
-    alert(message);
+    let myMessage: string = `hello world ${Date()}`;
+    console.log(myMessage);
 }
 
 main();
