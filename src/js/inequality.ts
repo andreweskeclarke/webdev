@@ -1,6 +1,6 @@
-function main() {
-    let myMessage: string = `hello world ${Date()}`;
-    console.log(myMessage);
+function someFunction() {
+    let myMessage: string = `hello world`;
+    return myMessage;
 }
 
-main();
+module.exports = someFunction;

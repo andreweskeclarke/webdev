@@ -1,0 +1,6 @@
+{
+    "modulePaths": ["<rootDir>/dist/js/"],
+    "roots": ["<rootDir>/test/js/"]
+}
+
+

@@ -1,13 +1,12 @@
-.DEFAULT_GOAL := all
-DEPLOY_DIR ?= dist
+.DEFAULT_GOAL := test
 
-HTML_FILES := $(shell find src/html -name *.html)
+HTML_FILES := $(shell find src/html -name *.html | grep -v "\.test\.")
 TS_FILES := $(shell find src/js -name *.ts)
 CSS_FILES := src/css/tailwind.css
 
-OUT_HTML_FILES := $(patsubst src/%, $(DEPLOY_DIR)/%, $(HTML_FILES))
-OUT_JS_FILES := $(patsubst src/%.ts, $(DEPLOY_DIR)/%.js, $(TS_FILES))
-OUT_CSS_FILES := $(DEPLOY_DIR)/css/tailwind.css
+OUT_HTML_FILES := $(patsubst src/%, dist/%, $(HTML_FILES))
+OUT_JS_FILES := $(patsubst src/%.ts, dist/%.js, $(TS_FILES))
+OUT_CSS_FILES := dist/css/tailwind.css
 
 NVM_DIR := $(HOME)/.nvm/
 NVM := NVM_SILENT=1 \. "$(NVM_DIR)/nvm.sh" && nvm
@@ -15,9 +14,6 @@ NVM_VERSIONED_DIR := $(NVM_DIR)/versions/node/$(shell cat .nvmrc)
 NVM_BIN := $(NVM_VERSIONED_DIR)/bin
 NVM_INC := $(NVM_VERSIONED_DIR)/include/node
 NVM_ENV := PATH=$(NVM_BIN):$(PATH) NVM_DIR=$(NVM_DIR) NVM_BIN=$(NVM_BIN) NVM_INC=$(NVM_INC)
-NODE := $(NVM_ENV) node
-TAILWIND := $(NVM_ENV) npx tailwindcss
-TSC := $(NVM_ENV) tsc
 
 
 node_modules: .nvmrc
@@ -26,15 +22,15 @@ node_modules: .nvmrc
 
 $(OUT_HTML_FILES): $(HTML_FILES)
 	mkdir -p $(@D)
-	rsync -a --no-times $(patsubst $(DEPLOY_DIR)/%, src/%, $(@)) $(@)
+	rsync -a --no-times $(patsubst dist/%, src/%, $(@)) $(@)
 
 
 $(OUT_JS_FILES): $(TS_FILES) node_modules
-	$(TSC) -p tsconfig.json --outDir $(DEPLOY_DIR)/js
+	$(NVM_ENV) tsc -p tsconfig.json --outDir dist/js
 
 
 $(OUT_CSS_FILES): $(OUT_HTML_FILES) $(OUT_JS_FILES) $(CSS_FILES) tailwind.config.js node_modules
-	$(TAILWIND) -i src/css/tailwind.css -o $(DEPLOY_DIR)/css/tailwind.css
+	$(NVM_ENV) npx tailwindcss -i src/css/tailwind.css -o dist/css/tailwind.css
 
 
 .PHONY: html
@@ -52,15 +48,21 @@ css: $(OUT_CSS_FILES)
 	@echo "--== CSS synced  ==--"
 
 
-.PHONY: all
-all: html js css
-	echo ""
+.PHONY: build
+build: html js css
+	@echo ""
 
 
 .PHONY: clean
 clean:
-	rm -rf $(DEPLOY_DIR)/*
+	rm -rf dist/*
+
+
+.PHONY: test
+test: build
+	$(NVM_ENV) npx jest --verbose --config jest.config.json
+
 
 .PHONY: watch
 watch:
-	fswatch -o src/ | xargs -I{} make
+	fswatch -o ./ | xargs -I{} make
