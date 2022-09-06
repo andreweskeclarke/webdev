@@ -20,6 +20,10 @@ node_modules: .nvmrc
 	$(NVM) install
 
 
+.PHONY: deps
+deps: node_modules
+
+
 $(OUT_HTML_FILES): $(HTML_FILES)
 	mkdir -p $(@D)
 	rsync -a --no-times $(patsubst dist/%, src/%, $(@)) $(@)
