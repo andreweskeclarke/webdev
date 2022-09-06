@@ -65,4 +65,4 @@ test: build
 
 .PHONY: watch
 watch:
-	fswatch -o ./ | xargs -I{} make
+	fswatch -or ./ | xargs -I{} make
