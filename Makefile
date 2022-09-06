@@ -9,15 +9,14 @@ OUT_JS_FILES := $(patsubst src/%.ts, dist/%.js, $(TS_FILES))
 OUT_CSS_FILES := dist/css/tailwind.css
 
 NVM_DIR := $(HOME)/.nvm
-NVM := NVM_SILENT=1 \. "$(NVM_DIR)/nvm.sh" && nvm
 NVM_VERSIONED_DIR := $(NVM_DIR)/versions/node/$(shell cat .nvmrc)
 NVM_BIN := $(NVM_VERSIONED_DIR)/bin
 NVM_INC := $(NVM_VERSIONED_DIR)/include/node
 NVM_ENV := PATH=$(NVM_BIN):$(PATH) NVM_DIR=$(NVM_DIR) NVM_BIN=$(NVM_BIN) NVM_INC=$(NVM_INC)
-
+NPM := NVM_SILENT=1 \. "$(NVM_DIR)/nvm.sh" && npm
 
 node_modules: .nvmrc
-	$(NVM) install
+	$(NPM) install
 
 
 .PHONY: deps
