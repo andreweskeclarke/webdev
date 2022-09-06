@@ -102,7 +102,7 @@ const startingIncomeSampler: Sampler = {
 }
 
 
-module.exports = { 
+module.exports = {
     ageProbability: ageProbability,
     linearIncomeMultipleByAge: linearIncomeMultipleByAge,
     startingIncomeByPercentile: startingIncomeByPercentile,

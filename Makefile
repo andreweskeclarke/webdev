@@ -8,7 +8,7 @@ OUT_HTML_FILES := $(patsubst src/%, dist/%, $(HTML_FILES))
 OUT_JS_FILES := $(patsubst src/%.ts, dist/%.js, $(TS_FILES))
 OUT_CSS_FILES := dist/css/tailwind.css
 
-NVM_DIR := $(HOME)/.nvm/
+NVM_DIR := $(HOME)/.nvm
 NVM := NVM_SILENT=1 \. "$(NVM_DIR)/nvm.sh" && nvm
 NVM_VERSIONED_DIR := $(NVM_DIR)/versions/node/$(shell cat .nvmrc)
 NVM_BIN := $(NVM_VERSIONED_DIR)/bin
