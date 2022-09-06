@@ -8,6 +8,7 @@ OUT_HTML_FILES := $(patsubst src/%, dist/%, $(HTML_FILES))
 OUT_JS_FILES := $(patsubst src/%.ts, dist/%.js, $(TS_FILES))
 OUT_CSS_FILES := dist/css/tailwind.css
 
+# Assumes the user has nvm installed (so far this is true for me and Github Actions)
 NVM_DIR := $(HOME)/.nvm
 NVM_VERSIONED_DIR := $(NVM_DIR)/versions/node/$(shell cat .nvmrc)
 NVM_BIN := $(NVM_VERSIONED_DIR)/bin
