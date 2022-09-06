@@ -14,9 +14,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Install nvm, node, npm
-      uses: dcodeIO/setup-node-nvm@v4
-
     - name: Install dependencies
       run: make deps
       
