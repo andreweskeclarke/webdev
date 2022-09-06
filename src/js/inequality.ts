@@ -3,9 +3,11 @@ const beginWorkingAge: number = 18;
 const retirementAge: number = 65;
 const maxAge: number = 100;
 
+
 const startingIncome0: number = 0;
 const startingIncome80: number = 100000;
 const startingIncome100: number = 400000;
+
 
 function ageProbability(ageInYears: number): number {
     /*
@@ -30,6 +32,7 @@ function ageProbability(ageInYears: number): number {
     }
 }
 
+
 function linearIncomeMultipleByAge(ageInYears: number): number {
     /* 
     Ages: 18 to 65
@@ -44,7 +47,7 @@ function linearIncomeMultipleByAge(ageInYears: number): number {
     if (ageInYears < beginWorkingAge || ageInYears > retirementAge) {
         return 0;
     }
-    return 1 + ((ageInYears - 18) / 47);
+    return 1 + ((ageInYears - beginWorkingAge) / (retirementAge - beginWorkingAge));
 }
 
 
@@ -71,8 +74,38 @@ function startingIncomeByPercentile(percentile: number) {
     return linearComponent(percentile) + exponentialComponent;
 }
 
+
+interface Sampler {
+    sample: () => number
+}
+
+
+const ageSampler: Sampler = {
+    sample: () => {
+        // Rejection sampling
+        while (true) {
+            let ageSample: number = minAge + (Math.random() * (maxAge - minAge));
+            let probSample: number = Math.random();
+            if (probSample < ageProbability(ageSample)) {
+                return ageSample;
+            }
+        }
+    }
+}
+
+
+const startingIncomeSampler: Sampler = {
+    sample: () => {
+        // Inverse transform sampling
+        return startingIncomeByPercentile(Math.random() * 100);
+    }
+}
+
+
 module.exports = { 
     ageProbability: ageProbability,
     linearIncomeMultipleByAge: linearIncomeMultipleByAge,
     startingIncomeByPercentile: startingIncomeByPercentile,
+    ageSampler: ageSampler,
+    startingIncomeSampler: startingIncomeSampler,
 };

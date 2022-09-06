@@ -1,6 +1,7 @@
 {
     "modulePaths": ["<rootDir>/dist/js/"],
-    "roots": ["<rootDir>/test/js/"]
+    "roots": ["<rootDir>/test/js/"],
+    "restoreMocks": true
 }
 
 
