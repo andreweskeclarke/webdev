@@ -1,18 +1,7 @@
-# 
-```
+# Web Dev
+This is a scratch pad for practicing some stale web development skills.
 
-.--.      .--.    .-''-.   _______            ______         .-''-.  ,---.  ,---. 
-|  |_     |  |  .'_ _   \ \  ____  \         |    _ `''.   .'_ _   \ |   /  |   | 
-| _( )_   |  | / ( ` )   '| |    \ |         | _ | ) _  \ / ( ` )   '|  |   |  .' 
-|(_ o _)  |  |. (_ o _)  || |____/ /         |( ''_'  ) |. (_ o _)  ||  | _ |  |  
-| (_,_) \ |  ||  (_,_)___||   _ _ '.         | . (_) `. ||  (_,_)___||  _( )_  |  
-|  |/    \|  |'  \   .---.|  ( ' )  \        |(_    ._) ''  \   .---.\ (_ o._) /  
-|  '  /\  `  | \  `-'    /| (_{;}_) |        |  (_.\.' /  \  `-'    / \ (_,_) /   
-|    /  \    |  \       / |  (_,_)  /        |       .'    \       /   \     /    
-`---'    `---`   `'-..-'  /_______.'         '-----'`       `'-..-'     `---`     
-                                                                                  
-```
-# Build
+## Build
 I use make, which assumes you have nvm installed under ~/.nvm ([instructions here](https://github.com/nvm-sh/nvm#installing-and-updating)):
 
 Once you have installed nvm, just run make:
