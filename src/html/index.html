@@ -25,10 +25,23 @@
                 2M people born per year
                 Linear decline from 65yo to 85yo
                 Work from 18 to 65
+                <svg id="inequality-graph"></svg>
             </p>
         </div>
     </div>
-    <script src="../js/inequality.js"></script>
+    <script type="module" src="../js/inequality.js"></script>
+    <script src="../js/d3.min.js"></script>
+    <script>
+        let data = [1, 2, 3, 4];
+        let svg = d3.select("#inequality-graph").attr("width", 500).attr("width", 500);
+        svg.selectAll('circle')
+           .data(data)
+           .enter()
+           .append('circle')
+           .attr("cx", data => 100 * data)
+           .attr("cy", 50)
+           .attr("r", 50)
+    </script>
 </body>
 
 </html>

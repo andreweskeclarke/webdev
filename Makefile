@@ -40,8 +40,8 @@ $(OUT_JS_FILES): $(TS_FILES) node_modules
 	$(NVM_ENV) tsc -p tsconfig.json --outDir dist/js
 
 
-$(OUT_CSS_FILES): $(OUT_HTML_FILES) $(OUT_JS_FILES) $(CSS_FILES) tailwind.config.js node_modules
-	$(NVM_ENV) npx tailwindcss -i src/css/tailwind.css -o dist/css/tailwind.css
+$(OUT_CSS_FILES): $(OUT_HTML_FILES) $(OUT_JS_FILES) $(CSS_FILES) tailwind.config.cjs node_modules
+	$(NVM_ENV) npx tailwindcss -i src/css/tailwind.css -o dist/css/tailwind.css -c tailwind.config.cjs
 
 
 .PHONY: html
@@ -76,9 +76,15 @@ clean:
 
 .PHONY: test
 test: build
-	$(NVM_ENV) npx jest --verbose --config jest.config.json
+ 	# flag Necessary for ES modules
+	$(NVM_ENV) NODE_OPTIONS=--experimental-vm-modules npx jest --verbose --config jest.config.json
 
 
 .PHONY: watch
 watch:
 	fswatch -or ./ | xargs -I{} make
+
+
+.PHONY: local
+local: build
+	npx http-server dist/ -o html/index.html

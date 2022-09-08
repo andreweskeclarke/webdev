@@ -1,4 +1,6 @@
-const inequality = require('inequality.js');
+import * as inequality from 'inequality.js';
+import {jest} from '@jest/globals';
+
 
 describe('ageProbability()', () => {
   test('computes known values', () => {
