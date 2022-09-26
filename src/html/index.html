@@ -25,22 +25,68 @@
                 2M people born per year
                 Linear decline from 65yo to 85yo
                 Work from 18 to 65
-                <svg id="inequality-graph"></svg>
+                <div id="inequality-graph"></div>
             </p>
         </div>
     </div>
-    <script type="module" src="../js/inequality.js"></script>
     <script src="../js/d3.min.js"></script>
-    <script>
-        let data = [1, 2, 3, 4];
-        let svg = d3.select("#inequality-graph").attr("width", 500).attr("width", 500);
-        svg.selectAll('circle')
-           .data(data)
-           .enter()
-           .append('circle')
-           .attr("cx", data => 100 * data)
-           .attr("cy", 50)
-           .attr("r", 50)
+    <script type="module">
+        import { ageSampler, startingIncomeSampler, linearIncomeMultipleByAge } from "../js/inequality.js"
+        import { colorForAge } from "../js/inequality-graphing.js"
+        let incomes = [];
+
+        function initialize(width, height) {
+            return d3.select("#inequality-graph").append("svg").attr("width", width).attr("height", height);
+        };
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function update(svg) {
+            let age = ageSampler.sample();
+            let startingIncome = startingIncomeSampler.sample();
+            incomes.push({
+                "age": age,
+                "income": linearIncomeMultipleByAge(age) * startingIncome
+            });
+            incomes.sort((a, b) => a.income - b.income);
+            
+            let maxWidth = +svg.attr("width");
+            let maxHeight = +svg.attr("height");
+            let xScale = d3.scaleLinear().domain([0, incomes.length]).range([0, maxWidth]);
+            let yScale = d3.scaleLinear().domain(d3.extent(incomes.map(d => d.income))).range([maxHeight, 0]);
+
+            svg.selectAll('circle').data(incomes).join(
+                function (enter) {
+                    return enter
+                        .append('circle')
+                        .attr("r", 5)
+                        .attr("cx", (d, i) => xScale(i))
+                        .attr("cy", d => yScale(d.income))
+                        .style("fill", d => colorForAge(d.age));
+                },
+                function (update) {
+                    update
+                        .attr("cx", (d, i) => xScale(i))
+                        .attr("cy", d => yScale(d.income))
+                        .style("fill", d => colorForAge(d.age));;
+                },
+                function (exit) {
+                    return exit.remove();
+                }
+            );
+
+            sleep(10).then(() => {
+                if (incomes.length < 100) {
+                    update(svg);
+                }
+            });
+        };
+
+        let svg = initialize(500, 500);
+        update(svg);
+
     </script>
 </body>
 

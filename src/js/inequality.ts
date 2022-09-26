@@ -108,4 +108,8 @@ export {
     startingIncomeByPercentile,
     ageSampler,
     startingIncomeSampler,
+    minAge,
+    beginWorkingAge,
+    retirementAge,
+    maxAge,
 };
